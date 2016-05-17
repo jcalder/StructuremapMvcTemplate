@@ -182,6 +182,7 @@
     <Compile Include="StructureMap\StructureMapConfiguration.cs" />
     <Compile Include="TestHelpers\FakeDependency.cs" />
     <Compile Include="TestHelpers\FakeActionFilter.cs" />
+    <Compile Include="TestHelpers\FakeMobileDeterminer.cs" />
     <Compile Include="TestHelpers\IFakeDependency.cs" />
   </ItemGroup>
   <ItemGroup>

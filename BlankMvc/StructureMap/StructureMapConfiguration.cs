@@ -8,6 +8,7 @@ namespace BlankMvc.StructureMap
     public static class StructureMapMvcConfiguration
     {
         private static IContainer _container;
+        private static Func<HttpContextBase, Action<ConfigurationExpression>> _perContainerAction;
         public static void SetParentContainer(IContainer parentContainer)
         {
             if (parentContainer == null)
@@ -27,11 +28,17 @@ namespace BlankMvc.StructureMap
             
             var nestedContainer = context.Items[HttpContextItemKeys.NestedContainerKey] as IContainer;
             if (nestedContainer != null) return nestedContainer;
-
+            
             nestedContainer = _container.GetNestedContainer();
+            if(_perContainerAction != null) nestedContainer.Configure(_perContainerAction(context));
             context.RegisterForDispose(nestedContainer);
             context.Items[HttpContextItemKeys.NestedContainerKey] = nestedContainer;
             return nestedContainer;
+        }
+
+        public static void PerNestedConatinerConfiguration(Func<HttpContextBase, Action<ConfigurationExpression>> expression)
+        {
+            _perContainerAction = expression;
         }
 
         /// <summary>

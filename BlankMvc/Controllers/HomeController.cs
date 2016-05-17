@@ -15,7 +15,7 @@ namespace BlankMvc.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Message = "On Initial Load" + _fakeDependency.DescibeMyLifetime();
+            ViewBag.Message = "On Initial Load " + _fakeDependency.DescibeMyLifetime();
             return View();
         }
 

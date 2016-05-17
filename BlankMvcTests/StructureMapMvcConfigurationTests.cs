@@ -15,6 +15,7 @@ namespace BlankMvcTests
         public void Teardown()
         {
             StructureMapMvcConfiguration.Reset();
+            _callCount = 0;
         }
 
         [Test]
@@ -43,6 +44,31 @@ namespace BlankMvcTests
             var wrapper = CreateContextWrapper();
             Assert.Throws<InvalidOperationException>(() => wrapper.GetNestedContainer());
         }
+
+        [Test]
+        public void Pre_nested_container_request_should_be_called_each_time_we_build_a_new_container()
+        {
+            var container = new Container();
+            StructureMapMvcConfiguration.SetParentContainer(container);
+            StructureMapMvcConfiguration.PerNestedConatinerConfiguration(IncrementCount);
+            var wrapper = CreateContextWrapper();
+            wrapper.GetNestedContainer();
+            Assert.AreEqual(1, _callCount);
+            var wrapper2 = CreateContextWrapper();
+            wrapper2.GetNestedContainer();
+            Assert.AreEqual(2, _callCount);
+        }
+
+        private static Action<ConfigurationExpression> IncrementCount(HttpContextBase context)
+        {
+            return (x =>
+            {
+                _callCount++;
+            });
+        }
+
+
+        private static int _callCount;
 
         private static HttpContextWrapper CreateContextWrapper()
         {

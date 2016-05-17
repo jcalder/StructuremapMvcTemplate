@@ -13,21 +13,21 @@ namespace BlankMvc.TestHelpers
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            AddEvent(filterContext.HttpContext, "Called in OnActionExecuting");
+            AddEvent(filterContext.HttpContext, "Called in OnActionExecuted");
         }
 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-            AddEvent(filterContext.HttpContext, "Called in OnActionExecuting");
+            AddEvent(filterContext.HttpContext, "Called in OnResultExecuting");
         }
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            AddEvent(filterContext.HttpContext, "Called in OnActionExecuting");
+            AddEvent(filterContext.HttpContext, "Called in OnResultExecuted");
         }
 
         private static void AddEvent(HttpContextBase context, string lifeEvent)
-        {
+       {
             var nestedContainer = context.GetNestedContainer();
             var fakeDependency = nestedContainer.GetInstance<IFakeDependency>();
             fakeDependency.AddEvent(lifeEvent);
